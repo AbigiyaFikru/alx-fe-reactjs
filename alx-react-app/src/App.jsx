@@ -13,6 +13,11 @@ function App() {
   return (
     <>
       <Header />
+      <UserProfile
+        name= "Alice"
+        Age={25}
+        bio="Loves hiking and photography"
+        />
       <WelcomeMessage />
       <MainContent />
       
