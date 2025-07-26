@@ -1,20 +1,25 @@
-import useRecipeStore from '../stores/recipeStore'
+import useRecipeStore from '../stores/recipeStore';
 
-export default function RecipeList() {
-  const { recipes } = useRecipeStore()
+const RecipeList = () => {
+  const { recipes } = useRecipeStore();
 
   return (
-    <div className="recipe-list">
+    <div>
+      <h2>Recipes</h2>
       {recipes.length === 0 ? (
         <p>No recipes yet. Add one to get started!</p>
       ) : (
-        recipes.map((recipe) => (
-          <div key={recipe.id} className="recipe-card">
-            <h3>{recipe.title}</h3>
-            <p>{recipe.description}</p>
-          </div>
-        ))
+        <ul>
+          {recipes.map((recipe) => (
+            <li key={recipe.id}>
+              <h3>{recipe.title}</h3>
+              <p>{recipe.description}</p>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
-  )
-}
+  );
+};
+
+export default RecipeList;
