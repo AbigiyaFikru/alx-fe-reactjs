@@ -5,18 +5,8 @@ const useRecipeStore = create((set) => ({
   addRecipe: (newRecipe) => 
     set((state) => ({
       recipes: [...state.recipes, { ...newRecipe, id: Date.now() }]
-    })),
-  // Some checkers may require these additional functions:
-  removeRecipe: (id) => 
-    set((state) => ({
-      recipes: state.recipes.filter(recipe => recipe.id !== id)
-    })),
-  updateRecipe: (id, updatedRecipe) =>
-    set((state) => ({
-      recipes: state.recipes.map(recipe => 
-        recipe.id === id ? { ...recipe, ...updatedRecipe } : recipe
-      )
     }))
 }));
 
 export default useRecipeStore;
+
