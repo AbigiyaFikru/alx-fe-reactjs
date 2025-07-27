@@ -1,49 +1,78 @@
-/* Main layout */
-.App {
-  max-width: 800px;
+/* styles.css */
+.app {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
-/* Form styles */
-.recipe-form {
+.search-bar {
+  margin: 20px 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.main-content {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 30px;
+  gap: 20px;
 }
 
-.recipe-form input,
-.recipe-form textarea {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.sidebar {
+  width: 300px;
 }
 
-.recipe-form textarea {
-  min-height: 100px;
+.recipe-container {
+  flex: 1;
 }
 
-.recipe-form button {
+.recipe-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.filter-group {
+  margin-bottom: 20px;
+}
+
+.ingredient-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.tag {
+  background: #eee;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.tag button {
+  margin-left: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.reset-btn {
+  margin-top: 20px;
   padding: 8px 16px;
-  background: #4CAF50;
+  background: #f44336;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-/* Recipe list styles */
-.recipe-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.recipe-card {
-  padding: 15px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  background: #f9f9f9;
+.no-results {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
 }
