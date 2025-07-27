@@ -1,17 +1,28 @@
-// src/App.jsx
+// App.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import SearchBar from './components/SearchBar';
+import AdvancedFilters from './components/AdvancedFilters';
 import RecipeList from './components/RecipeList';
-import RecipeDetails from './components/RecipeDetails';
+import './styles.css';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RecipeList />} />
-        <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="app">
+      <header>
+        <h1>Recipe Finder</h1>
+        <SearchBar />
+      </header>
+      
+      <div className="main-content">
+        <aside className="sidebar">
+          <AdvancedFilters />
+        </aside>
+        
+        <main className="recipe-container">
+          <RecipeList />
+        </main>
+      </div>
+    </div>
   );
 };
 
