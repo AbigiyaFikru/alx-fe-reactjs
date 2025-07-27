@@ -1,31 +1,43 @@
+// src/components/RecipeDetails.jsx
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import useRecipeStore from '../stores/recipeStore';
+import { useRecipeStore } from '../recipeStore';
 import EditRecipeForm from './EditRecipeForm';
 import DeleteRecipeButton from './DeleteRecipeButton';
 
 const RecipeDetails = () => {
-  const { id } = useParams();
-  const recipe = useRecipeStore(state => 
-    state.getRecipeById(Number(id))
+  const { recipeId } = useParams(); // ✅ Use updated param name
+
+  const recipe = useRecipeStore(state =>
+    state.recipes.find(recipe => recipe.id === recipeId)
   );
 
   if (!recipe) {
-    return (
-      <div className="error">
-        <h2>Recipe not found</h2>
-        <p>No recipe exists with ID: {id}</p>
-      </div>
-    );
+    return <p>Recipe not found!</p>;
   }
 
   return (
-    <div className="recipe-details">
-      <h2>{recipe.title}</h2>
+    <div>
+      <h1>{recipe.title}</h1>
       <p>{recipe.description}</p>
-      <div className="action-buttons">
-        <EditRecipeForm recipe={recipe} />
-        <DeleteRecipeButton recipeId={recipe.id} />
-      </div>
+
+      <h3>Ingredients</h3>
+      <ul>
+        {recipe.ingredients.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+
+      <h3>Steps</h3>
+      <ol>
+        {recipe.steps.map((step, index) => (
+          <li key={index}>{step}</li>
+        ))}
+      </ol>
+
+      {/* ✅ Render edit and delete components */}
+      <EditRecipeForm recipe={recipe} />
+      <DeleteRecipeButton recipeId={recipe.id} />
     </div>
   );
 };
