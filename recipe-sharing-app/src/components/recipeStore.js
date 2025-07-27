@@ -1,97 +1,63 @@
-import { create } from 'zustand'
+// recipeStore.js
+import create from 'zustand';
 
 const useRecipeStore = create((set, get) => ({
-  // State
-  recipes: [],
-  favorites: [],
-  recommendations: [],
+  recipes: [], // Initialized when fetching data
   searchTerm: '',
   filters: {
     ingredients: [],
-    maxTime: null,
-    minRating: null
+    maxPrepTime: null,
+    difficulty: null,
+    dietaryRestrictions: []
   },
-
-  // Recipe CRUD Actions
-  setRecipes: (recipes) => set({ recipes }), // The required action
-  addRecipe: (newRecipe) => set((state) => ({
-    recipes: [...state.recipes, newRecipe]
-  })),
-  deleteRecipe: (recipeId) => set((state) => ({
-    recipes: state.recipes.filter(recipe => recipe.id !== recipeId)
-  })),
-  updateRecipe: (updatedRecipe) => set((state) => ({
-    recipes: state.recipes.map(recipe => 
-      recipe.id === updatedRecipe.id ? updatedRecipe : recipe
-    )
-  })),
-
-  // Search and Filter Actions
+  
+  // Actions
   setSearchTerm: (term) => set({ searchTerm: term }),
-  setFilter: (filterName, value) => set((state) => ({
-    filters: { ...state.filters, [filterName]: value }
-  })),
-
-  // Favorites Actions
-  addFavorite: (recipeId) => set(state => ({
-    favorites: state.favorites.includes(recipeId)
-      ? state.favorites
-      : [...state.favorites, recipeId]
-  })),
-  removeFavorite: (recipeId) => set(state => ({
-    favorites: state.favorites.filter(id => id !== recipeId)
-  })),
-  isFavorite: (recipeId) => get().favorites.includes(recipeId),
-
-  // Computed Values
-  getFilteredRecipes: () => {
-    const { recipes, searchTerm, filters } = get()
+  setFilters: (newFilters) => set({ filters: { ...get().filters, ...newFilters } }),
+  resetFilters: () => set({ 
+    searchTerm: '',
+    filters: {
+      ingredients: [],
+      maxPrepTime: null,
+      difficulty: null,
+      dietaryRestrictions: []
+    }
+  }),
+  
+  // Computed filtered recipes
+  filteredRecipes: () => {
+    const { recipes, searchTerm, filters } = get();
+    
     return recipes.filter(recipe => {
-      const matchesSearch = searchTerm === ''  
-        recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) 
-        recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
+      // Search term matching (title or description)
+      const matchesSearch = searchTerm === '' || 
+        recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(searchTerm.toLowerCase());
       
-      const matchesIngredients = filters.ingredients.length === 0 
-        (recipe.ingredients && filters.ingredients.every(ing => 
-          recipe.ingredients.includes(ing)))
+      // Ingredient filter
+      const matchesIngredients = filters.ingredients.length === 0 ||
+        filters.ingredients.every(ingredient => 
+          recipe.ingredients.some(recipeIngredient => 
+            recipeIngredient.name.toLowerCase().includes(ingredient.toLowerCase())
+          )
+        );
       
-      const matchesTime = !filters.maxTime  
-        (recipe.cookingTime && recipe.cookingTime <= filters.maxTime)
+      // Preparation time filter
+      const matchesPrepTime = !filters.maxPrepTime || 
+        recipe.prepTime <= filters.maxPrepTime;
       
-      const matchesRating = !filters.minRating  
-        (recipe.rating && recipe.rating >= filters.minRating)
+      // Difficulty filter
+      const matchesDifficulty = !filters.difficulty ||
+        recipe.difficulty === filters.difficulty;
       
-      return matchesSearch && matchesIngredients && matchesTime && matchesRating
-    })
-  },
-
-  // Recommendations
-  generateRecommendations: () => set(state => {
-    const { recipes, favorites } = state
-    if (recipes.length === 0) return { recommendations: [] }
-
-    if (favorites.length === 0) {
-      return { 
-        recommendations: [...recipes]
-          .sort((a, b) => (b.rating  0) - (a.rating  0))
-          .slice(0, 3) 
-      }
-    }
-
-    const favoriteTags = recipes
-      .filter(recipe => favorites.includes(recipe.id))
-      .flatMap(recipe => recipe.tags  [])
-
-    return {
-      recommendations: recipes
-        .filter(recipe => 
-          !favorites.includes(recipe.id) &&
-          recipe.tags?.some(tag => favoriteTags.includes(tag))
-        )
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3)
-    }
-  })
-}))
-
-export default useRecipeStore
+      // Dietary restrictions filter
+      const matchesDietary = filters.dietaryRestrictions.length === 0 ||
+        filters.dietaryRestrictions.every(restriction => 
+          recipe.dietaryInfo.includes(restriction)
+        );
+      
+      return matchesSearch && matchesIngredients && matchesPrepTime && 
+             matchesDifficulty && matchesDietary;
+    });
+  }
+}));
