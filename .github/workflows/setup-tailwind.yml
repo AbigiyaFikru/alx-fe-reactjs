@@ -1,0 +1,66 @@
+name: Setup Tailwind CSS in React
+on: [workflow_dispatch]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Create Vite React project
+        run: |
+          npm create vite@latest tailwind-react-integration -- --template react
+          cd tailwind-react-integration
+          npm install
+          npm install -D tailwindcss postcss autoprefixer @tailwindcss/vite
+          npx tailwindcss init -p
+      
+      - name: Configure Tailwind
+        run: |
+          # Update tailwind config
+          cat > tailwind-react-integration/tailwind.config.js << 'EOL'
+          /** @type {import('tailwindcss').Config} */
+          export default {
+            content: [
+              "./index.html",
+              "./src/**/*.{js,ts,jsx,tsx}",
+            ],
+            theme: {
+              extend: {},
+            },
+            plugins: [],
+          }
+          EOL
+
+          # Create CSS file
+          cat > tailwind-react-integration/src/index.css << 'EOL'
+          @tailwind base;
+          @tailwind components;
+          @tailwind utilities;
+          EOL
+
+          # Create Vite config
+          cat > tailwind-react-integration/vite.config.js << 'EOL'
+          import { defineConfig } from 'vite'
+          import react from '@vitejs/plugin-react'
+          import tailwindcss from '@tailwindcss/vite'
+
+          export default defineConfig({
+            plugins: [
+              react(),
+              tailwindcss(),
+            ],
+          })
+          EOL
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Complete Tailwind CSS setup with React"
+          git push
