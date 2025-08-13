@@ -1,42 +1,28 @@
 import { useState } from 'react';
+import SearchUser from './components/SearchUser';
 import './App.css';
-import SearchBar from './components/SearchBar';
-import UserCard from './components/UserCard';
-import { searchUsers } from './services/githubApi';
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [theme, setTheme] = useState('light');
 
-  const handleSearch = async (username) => {
-    if (!username.trim()) return;
-    
-    setLoading(true);
-    setError(null);
-    try {
-      const users = await searchUsers(username);
-      setUsers(users);
-    } catch (err) {
-      setError(err.message);
-      setUsers([]);
-    } finally {
-      setLoading(false);
-    }
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <div className="app">
-      <h1>GitHub User Search</h1>
-      <SearchBar onSearch={handleSearch} loading={loading} />
-      
-      {error && <p className="error">{error}</p>}
-      
-      <div className="users-container">
-        {users.map(user => (
-          <UserCard key={user.id} user={user} />
-        ))}
-      </div>
+    <div className={`app ${theme}`}>
+      <header>
+        <h1>GitHub User Search</h1>
+        <button onClick={toggleTheme} className="theme-toggle">
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'} Mode
+        </button>
+      </header>
+      <main>
+        <SearchUser />
+      </main>
+      <footer>
+        <p>Search for any GitHub user profile</p>
+      </footer>
     </div>
   );
 }
