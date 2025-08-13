@@ -1,3 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-100 text-gray-900;
+}
+
 .search-container {
   max-width: 600px;
   margin: 0 auto;
