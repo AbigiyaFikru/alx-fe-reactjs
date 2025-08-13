@@ -2,30 +2,46 @@ import axios from 'axios';
 
 const API_URL = 'https://api.github.com';
 
-// Main function to fetch user data
-export const fetchUserData = async (username) => {
+export const searchUsers = async (params) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${username}`);
+    // Construct query string based on parameters
+    let query = params.username ? `${params.username} in:login` : '';
+    if (params.location) query += ` location:${params.location}`;
+    if (params.minRepos) query += ` repos:>${params.minRepos}`;
+    if (params.language) query += ` language:${params.language}`;
+    
+    const response = await axios.get(`${API_URL}/search/users`, {
+      params: {
+        q: query,
+        page: params.page || 1,
+        per_page: 10,
+        sort: 'followers',
+        order: 'desc'
+      }
+    });
+    
+    // Enhanced data fetching for each user
+    const usersWithDetails = await Promise.all(
+      response.data.items.map(async user => {
+        try {
+          const userDetails = await axios.get(user.url);
+          return {
+            ...user,
+            ...userDetails.data
+          };
+        } catch {
+          return user;
+        }
+      })
+    );
+    
     return {
-      data: response.data,
-      status: response.status
+      ...response.data,
+      items: usersWithDetails
     };
   } catch (error) {
     throw new Error(
-      error.response?.status === 404 
-        ? 'User not found' 
-        : error.response?.data?.message || 'Failed to fetch user data'
+      error.response?.data?.message || 'Failed to search users'
     );
   }
-};
-
-// Additional API functions
-export const fetchUserRepos = async (username) => {
-  const response = await axios.get(`${API_URL}/users/${username}/repos?sort=updated`);
-  return response.data;
-};
-
-export const fetchUserFollowers = async (username) => {
-  const response = await axios.get(`${API_URL}/users/${username}/followers`);
-  return response.data;
 };
