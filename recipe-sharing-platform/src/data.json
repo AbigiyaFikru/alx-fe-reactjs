@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Spaghetti Carbonara",
+    "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+    "image": "https://images.unsplash.com/photo-1611277466626-deefac2b1f3f?w=600",
+    "cookingTime": "20 mins",
+    "servings": 2
+  },
+  {
+    "id": 2,
+    "title": "Chicken Tikka Masala",
+    "summary": "Chunks of grilled chicken cooked in a creamy tomato based gravy.",
+    "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600",
+    "cookingTime": "40 mins",
+    "servings": 4
+  },
+  {
+    "id": 3,
+    "title": "Vegetable Stir Fry",
+    "summary": "Quick and healthy mix of fresh vegetables with a savory sauce.",
+    "image": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600",
+    "cookingTime": "15 mins",
+    "servings": 2
+  }
+]
