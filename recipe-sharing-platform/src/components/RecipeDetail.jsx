@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 export default function RecipeDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const response = await fetch('/data.json');
+        if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         const foundRecipe = data.find(r => r.id === parseInt(id));
+        if (!foundRecipe) throw new Error('Recipe not found');
         setRecipe(foundRecipe);
-      } catch (error) {
-        console.error('Error loading recipe:', error);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -31,68 +36,81 @@ export default function RecipeDetail() {
     );
   }
 
-  if (!recipe) {
+  if (error) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-red-500 mb-4">Recipe not found</h1>
-        <Link to="/" className="text-blue-500 hover:underline">Back to Home</Link>
+        <h1 className="text-2xl font-bold text-red-500 mb-4">{error}</h1>
+        <button 
+          onClick={() => navigate('/')}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
+        >
+          Back to Home
+        </button>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Link to="/" className="inline-block mb-6 text-blue-500 hover:underline">
-        ← Back to recipes
-      </Link>
+      <button 
+        onClick={() => navigate(-1)}
+        className="flex items-center mb-6 text-blue-500 hover:text-blue-700"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+        </svg>
+        Back to recipes
+      </button>
       
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img 
-          src={recipe.image} 
-          alt={recipe.title} 
-          className="w-full h-64 sm:h-80 object-cover"
-        />
-        
-        <div className="p-6">
-          <div className="flex justify-between items-start mb-4">
-            <h1 className="text-3xl font-bold text-gray-800">{recipe.title}</h1>
-            <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-              {recipe.cookingTime}
-            </div>
+      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="md:flex">
+          <div className="md:flex-shrink-0">
+            <img 
+              src={recipe.image} 
+              alt={recipe.title} 
+              className="h-64 w-full object-cover md:w-64 lg:w-80"
+            />
           </div>
-          
-          <p className="text-gray-600 mb-6">{recipe.summary}</p>
-          
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Ingredients</h2>
-              <ul className="space-y-2">
-                {recipe.ingredients.map((ingredient, index) => (
-                  <li key={index} className="flex items-start">
-                    <span className="inline-block w-5 h-5 bg-blue-100 text-blue-800 rounded-full mr-2 mt-1 flex items-center justify-center text-xs">✓</span>
-                    <span>{ingredient}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className="p-8">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-gray-800">{recipe.title}</h1>
+              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                {recipe.cookingTime}
+              </span>
             </div>
+            <p className="mt-2 text-gray-600">{recipe.summary}</p>
             
-            <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Instructions</h2>
-              <ol className="space-y-4">
-                {recipe.instructions.map((step, index) => (
-                  <li key={index} className="flex">
-                    <span className="inline-block w-8 h-8 bg-blue-500 text-white rounded-full mr-3 flex items-center justify-center font-bold">{index + 1}</span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ol>
+            <div className="mt-6 grid md:grid-cols-2 gap-8">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Ingredients</h2>
+                <ul className="space-y-3">
+                  {recipe.ingredients.map((ingredient, i) => (
+                    <li key={i} className="flex items-start">
+                      <span className="flex-shrink-0 h-5 w-5 text-blue-500 mr-2 mt-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                      </span>
+                      <span className="text-gray-700">{ingredient}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Instructions</h2>
+                <ol className="space-y-4">
+                  {recipe.instructions.map((step, i) => (
+                    <li key={i} className="flex">
+                      <span className="flex-shrink-0 h-6 w-6 bg-blue-500 text-white rounded-full flex items-center justify-center mr-3">
+                        {i + 1}
+                      </span>
+                      <span className="text-gray-700">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-gray-600">
-              <span className="font-semibold">Servings:</span> {recipe.servings}
-            </p>
           </div>
         </div>
       </div>
