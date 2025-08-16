@@ -5,7 +5,25 @@
     "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
     "image": "https://images.unsplash.com/photo-1611277466626-deefac2b1f3f?w=600",
     "cookingTime": "20 mins",
-    "servings": 2
+    "servings": 2,
+    "ingredients": [
+      "400g spaghetti",
+      "200g pancetta or guanciale, diced",
+      "4 large eggs",
+      "50g pecorino cheese, grated",
+      "50g parmesan, grated",
+      "Freshly ground black pepper",
+      "Salt"
+    ],
+    "instructions": [
+      "Bring a large pot of salted water to boil and cook spaghetti according to package instructions.",
+      "While pasta cooks, fry pancetta in a large pan until crispy.",
+      "In a bowl, whisk eggs and mix in grated cheeses and black pepper.",
+      "Drain pasta, reserving some cooking water, and immediately add to the pancetta.",
+      "Remove pan from heat, add egg mixture, and stir quickly to create a creamy sauce.",
+      "Add pasta water if needed to loosen the sauce.",
+      "Serve immediately with extra grated cheese and pepper."
+    ]
   },
   {
     "id": 2,
@@ -13,14 +31,27 @@
     "summary": "Chunks of grilled chicken cooked in a creamy tomato based gravy.",
     "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600",
     "cookingTime": "40 mins",
-    "servings": 4
-  },
-  {
-    "id": 3,
-    "title": "Vegetable Stir Fry",
-    "summary": "Quick and healthy mix of fresh vegetables with a savory sauce.",
-    "image": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600",
-    "cookingTime": "15 mins",
-    "servings": 2
+    "servings": 4,
+    "ingredients": [
+      "500g chicken breast, cubed",
+      "150ml yogurt",
+      "2 tbsp tikka masala paste",
+      "1 onion, finely chopped",
+      "2 garlic cloves, minced",
+      "400g canned tomatoes",
+      "100ml cream",
+      "1 tbsp vegetable oil",
+      "Fresh coriander for garnish"
+    ],
+    "instructions": [
+      "Marinate chicken in yogurt and 1 tbsp tikka paste for at least 1 hour.",
+      "Grill or pan-fry chicken until lightly charred and cooked through.",
+      "In a separate pan, sauté onion and garlic until soft.",
+      "Add remaining tikka paste and cook for 1 minute.",
+      "Add canned tomatoes and simmer for 15 minutes.",
+      "Blend sauce until smooth, then return to pan.",
+      "Add cooked chicken and cream, simmer for 5 more minutes.",
+      "Garnish with fresh coriander and serve with rice."
+    ]
   }
 ]
