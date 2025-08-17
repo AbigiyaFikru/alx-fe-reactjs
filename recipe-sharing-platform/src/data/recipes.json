@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "title": "Classic Margherita Pizza",
+    "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591",
+    "prepTime": 30,
+    "servings": 4,
+    "rating": 4.5,
+    "ingredients": [
+      "1 pizza dough",
+      "1/2 cup tomato sauce",
+      "2 cups fresh mozzarella",
+      "Fresh basil leaves",
+      "2 tbsp olive oil",
+      "Salt to taste"
+    ],
+    "instructions": [
+      "Preheat oven to 475°F (245°C).",
+      "Roll out the pizza dough on a floured surface.",
+      "Spread tomato sauce evenly over the dough.",
+      "Add slices of mozzarella cheese.",
+      "Bake for 10-12 minutes until crust is golden.",
+      "Garnish with fresh basil and drizzle with olive oil."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Chocolate Chip Cookies",
+    "image": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e",
+    "prepTime": 45,
+    "servings": 24,
+    "rating": 4.8,
+    "ingredients": [
+      "2 1/4 cups all-purpose flour",
+      "1 tsp baking soda",
+      "1 tsp salt",
+      "1 cup butter, softened",
+      "3/4 cup granulated sugar",
+      "3/4 cup packed brown sugar",
+      "2 large eggs",
+      "2 cups chocolate chips"
+    ],
+    "instructions": [
+      "Preheat oven to 375°F (190°C).",
+      "Combine flour, baking soda and salt in small bowl.",
+      "Beat butter, sugars and vanilla in large mixer bowl.",
+      "Add eggs one at a time, beating well.",
+      "Gradually beat in flour mixture.",
+      "Stir in chocolate chips.",
+      "Drop by rounded tablespoon onto ungreased baking sheets.",
+      "Bake for 9-11 minutes until golden brown."
+    ]
+  }
+]
