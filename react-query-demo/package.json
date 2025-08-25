@@ -1,7 +1,5 @@
 
-### 2. package.json
 
-```json
 {
   "name": "react-query-demo",
   "private": true,
