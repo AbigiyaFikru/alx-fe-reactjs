@@ -1,12 +1,17 @@
-import PostsComponent from './components/PostsComponent'
+import { QueryClient, QueryClientProvider } from 'react-query';
+import PostsComponent from './components/PostsComponent';
 
-export default function App() {
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <div>
-      <PostsComponent />
-      <p style={{ marginTop: 24, fontSize: 12, opacity: 0.8 }}>
-        Tip: Open React Query Devtools (bottom-right) to watch cache, freshness, and refetches.
-      </p>
-    </div>
-  )
+    <QueryClientProvider client={queryClient}>
+      <div className="app">
+        <h1>React Query Demo - Posts from JSONPlaceholder</h1>
+        <PostsComponent />
+      </div>
+    </QueryClientProvider>
+  );
 }
+
+export default App;
